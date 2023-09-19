@@ -23,6 +23,33 @@ class Controller:
         self.view = View()
         self.model_storage = ModelStorage()
 
+    def panel_menu(self):
+        while True:
+            username = self.view.get_str("Please enter your Login: ")
+            password = self.view.get_str("Please enter your Password: ")
+
+            if self.Login().validate_login(username, password):
+                self.view.print_msg("You are logged in")
+                break
+            else:
+                self.view.print_msg("Login failed. Please check your credentials.")
+    class Login:
+        def __init__(self):
+            self.users = {
+                "owner": "owner_password",
+                "personnel": "personnel_password",
+                "user": "user_password",
+            }
+
+        def validate_login(self, username, password):
+            if username in self.users and self.users[username] == password:
+                return True
+            else:
+                return False
+
+    def control(self):
+        self.panel_menu()
+
 class UserAccess:
     def __init__(self):
         self.basket = []
@@ -37,7 +64,7 @@ class UserAccess:
         return self.basket
 
     def remove_order(self):
-        return self.basket = []
+        return self.basket == []
 
     def payments(self):
         return payment_method
@@ -45,3 +72,5 @@ class UserAccess:
 
 
 if __name__=="__main__":
+    Controller().control()
+
