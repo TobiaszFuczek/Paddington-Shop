@@ -1,13 +1,13 @@
-from model.login import Login
-from model.model_storage import ModelStorage
+from model.storage.basket_storage import BasketStorage
+from model.storage.user_storage import UserStorage
 from view.view import View
 
 
 class Controller:
     def __init__(self):
         self.view = View()
-        self.model_storage = ModelStorage()
-        self.login = Login()
+        self.user_storage = UserStorage()
+        self.basket_storage = BasketStorage()
 
     def panel_menu(self):
         while True:
