@@ -6,8 +6,4 @@ class Login:
             "user": "user_password",
         }
 
-    def validate_login(self, username, password):
-        if username in self.users and self.users[username] == password:
-            return True
-        else:
-            return False
+

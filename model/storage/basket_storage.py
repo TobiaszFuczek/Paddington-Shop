@@ -5,7 +5,7 @@ from model.storage.basket import Basket
 
 class BasketStorage:
     def __init__(self):
-        pass
+        self.baskets = {}
 
     def find_all(self) -> list:
         pass

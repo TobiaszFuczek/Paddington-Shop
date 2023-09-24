@@ -5,7 +5,11 @@ from model.storage.user import User
 
 class UserStorage:
     def __init__(self):
-        pass
+        self.users = {
+            "owner": User("owner", "owner_password", "owner"),
+            "personnel": User("personnel", "personnel_password", "personnel"),
+            "user": User("user", "user_password", "user"),
+        }
 
     def find_all(self) -> list:
         pass
@@ -23,3 +27,9 @@ class UserStorage:
 
     def delete(self, user_id: uuid) -> User:
         pass
+
+    def find_by_login(self, login):
+        for username, password in self.users.items():
+            if username == login:
+                return User(username, login, password)
+        return None
