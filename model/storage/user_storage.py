@@ -6,9 +6,9 @@ from model.storage.user import User
 class UserStorage:
     def __init__(self):
         self.users = {
-            "owner": User("owner", "owner_password", "owner"),
-            "personnel": User("personnel", "personnel_password", "personnel"),
-            "user": User("user", "user_password", "user"),
+            "owner": User("owner", "owner", "owner"),
+            "personnel": User("personnel", "personnel", "personnel"),
+            "user": User("user", "user", "user"),
         }
 
     def find_all(self) -> list:
@@ -29,7 +29,7 @@ class UserStorage:
         pass
 
     def find_by_login(self, login):
-        for username, password in self.users.items():
-            if username == login:
-                return User(username, login, password)
+        for user in self.users.values():
+            if user.username == login:
+                return user
         return None
