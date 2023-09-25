@@ -57,9 +57,27 @@ class Controller:
                 user_access.create_order()
                 self.view.print_message("Order created successfully.")
             elif choice == "2":
-                # Tutaj możesz dodać logikę do modyfikacji zamówienia
-                modified_order = []  # Zamiast tego powinna być logika modyfikacji zamówienia
-                user_access.modify_order(modified_order)
+                while True:
+                    modification_options = [
+                        "Add Product to Order",
+                        "Remove Product from Order",
+                        "Finish Modification"
+                    ]
+                    modification_choice = self.view.get_menu_choice(modification_options)
+
+                    if modification_choice == "1":
+                        product = self.view.get_input("Enter the product name: ")
+                        user_access.add_product_to_basket(product)
+                        self.view.print_message(f"{product} added to the order.")
+                    elif modification_choice == "2":
+                        product = self.view.get_input("Enter the product name to remove: ")
+                        user_access.remove_product_from_basket(product)
+                        self.view.print_message(f"{product} removed from the order.")
+                    elif modification_choice == "3":
+                        break
+                    else:
+                        self.view.print_message("Invalid choice. Please select a valid option.")
+
                 self.view.print_message("Order modified successfully.")
             elif choice == "3":
                 order_preview = user_access.preview_order()
