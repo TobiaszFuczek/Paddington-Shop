@@ -8,18 +8,22 @@ class BasketStorage:
         self.baskets = {}
 
     def find_all(self) -> list:
-        pass
+        return list(self.baskets.values())
 
     def find_by_id(self, basket_id: uuid) -> Basket:
-        pass
+        return self.baskets.get(basket_id)
 
     # Once adding the new Basket the id should not be populated
     def add(self, basket: Basket) -> Basket:
-        pass
+        basket_id = uuid.uuid4()
+        basket.id = basket_id
+        self.baskets[basket_id] = basket
+        return basket
 
     # Once adding the new Basket the id should be populated
     def update(self, basket: Basket) -> Basket:
-        pass
+        self.baskets[basket.id] = basket
+        return basket
 
     def delete(self, basket_id: uuid) -> Basket:
-        pass
+        basket = self.baskets.pop(basket_id, None)

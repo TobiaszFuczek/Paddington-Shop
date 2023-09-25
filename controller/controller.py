@@ -3,6 +3,7 @@ from model.storage.basket_storage import BasketStorage
 from model.storage.user_storage import UserStorage
 from view.view import View
 from model.user_access import UserAccess
+from model.storage.basket import Basket
 
 
 
@@ -12,6 +13,7 @@ class Controller:
         self.user_storage = UserStorage()
         self.basket_storage = BasketStorage()
         self.auth_service = AuthService()
+        self.user_access = UserAccess()
 
     def panel_menu(self):
         while True:
@@ -54,8 +56,21 @@ class Controller:
             choice = self.view.get_menu_choice(menu_options)
 
             if choice == "1":
-                user_access.create_order()
+                products_to_add = []
+                new_basket = Basket()  # Tworzymy nowy koszyk
+                while True:
+                    product = self.view.get_input("Enter the product name (or 'done' to finish): ")
+
+                    if product.lower() == "done":
+                        break
+
+                    products_to_add.append(product)
+
+                for product in products_to_add:
+                    new_basket.add_product(product)  # Dodaj pojedynczy produkt do koszyka
+
                 self.view.print_message("Order created successfully.")
+
             elif choice == "2":
                 while True:
                     modification_options = [

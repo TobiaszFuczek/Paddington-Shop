@@ -2,6 +2,10 @@ class UserAccess:
     def __init__(self):
         self.basket = []
 
+    def create_order(self, products_to_add):
+        pass
+
+
     def add_product_to_basket(self, product):
         self.basket.append(product)
 
