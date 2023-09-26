@@ -13,7 +13,7 @@ class Controller:
         self.user_storage = UserStorage()
         self.basket_storage = BasketStorage()
         self.auth_service = AuthService()
-        self.user_access = UserAccess()
+        self.user_access = UserAccess(self.basket_storage)
 
     def panel_menu(self):
         while True:
@@ -41,8 +41,6 @@ class Controller:
         pass
 
     def user_menu(self):
-        user_access = UserAccess()
-
         while True:
             menu_options = [
                 "Create Order",
@@ -57,7 +55,6 @@ class Controller:
 
             if choice == "1":
                 products_to_add = []
-                new_basket = Basket()  # Tworzymy nowy koszyk
                 while True:
                     product = self.view.get_input("Enter the product name (or 'done' to finish): ")
 
@@ -66,42 +63,78 @@ class Controller:
 
                     products_to_add.append(product)
 
-                for product in products_to_add:
-                    new_basket.add_product(product)  # Dodaj pojedynczy produkt do koszyka
-
-                self.view.print_message("Order created successfully.")
+                new_basket = self.user_access.create_order(products_to_add)  # Przekazujemy produkty do create_order
+                self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
 
             elif choice == "2":
-                while True:
-                    modification_options = [
-                        "Add Product to Order",
-                        "Remove Product from Order",
-                        "Finish Modification"
-                    ]
-                    modification_choice = self.view.get_menu_choice(modification_options)
+                order_number = self.view.get_input("Enter the order number to modify: ")
+                order_to_modify = self.user_access.find_order_by_number(order_number)
 
-                    if modification_choice == "1":
-                        product = self.view.get_input("Enter the product name: ")
-                        user_access.add_product_to_basket(product)
-                        self.view.print_message(f"{product} added to the order.")
-                    elif modification_choice == "2":
-                        product = self.view.get_input("Enter the product name to remove: ")
-                        user_access.remove_product_from_basket(product)
-                        self.view.print_message(f"{product} removed from the order.")
-                    elif modification_choice == "3":
-                        break
-                    else:
-                        self.view.print_message("Invalid choice. Please select a valid option.")
+                if order_to_modify is None:
+                    self.view.print_message("Order not found.")
+                else:
+                    while True:
+                        modification_options = [
+                            "Add Product to Order",
+                            "Remove Product from Order",
+                            "Finish Modification"
+                        ]
+                        modification_choice = self.view.get_menu_choice(modification_options)
 
-                self.view.print_message("Order modified successfully.")
+                        if modification_choice == "1":
+                            product = self.view.get_input("Enter the product name to add: ")
+                            self.user_access.add_product_to_basket(order_to_modify, product)
+                            self.view.print_message(f"{product} added to the order.")
+                        elif modification_choice == "2":
+                            self.view.print_message("Products in the order:")
+                            for product in order_to_modify.products:
+                                self.view.print_message(product)
+
+                            product = self.view.get_input("Enter the product name to remove: ")
+                            self.user_access.remove_product_from_basket(order_to_modify, product)
+                            self.view.print_message(f"{product} removed from the order.")
+                        elif modification_choice == "3":
+                            break
+                        else:
+                            self.view.print_message("Invalid choice. Please select a valid option.")
+
+                    self.view.print_message("Order modified successfully.")
+
             elif choice == "3":
-                order_preview = user_access.preview_order()
-                self.view.print_message("Order Preview:")
-                for product in order_preview:
-                    self.view.print_message(product)
+                order_list = self.user_access.get_order_list()
+                self.view.print_message("Available Orders:")
+                for order in order_list:
+                    self.view.print_message(order.order_number)
+
+                selected_order_number = self.view.get_input(
+                    "Enter the order number to preview (or 'back' to go back): ")
+                if selected_order_number == "back":
+                    continue
+
+                selected_order = self.user_access.find_order_by_number(selected_order_number)
+                if selected_order:
+                    order_preview = selected_order.get_products()
+                    self.view.print_message("Order Preview:")
+                    for product in order_preview:
+                        self.view.print_message(product)
+                else:
+                    self.view.print_message("Order not found.")
             elif choice == "4":
-                user_access.remove_order()
-                self.view.print_message("Order removed.")
+                order_list = self.user_access.get_order_list()
+                self.view.print_message("Available Orders:")
+                for order in order_list:
+                    self.view.print_message(order.order_number)
+
+                selected_order_number = self.view.get_input("Enter the order number to remove (or 'back' to go back): ")
+                if selected_order_number == "back":
+                    continue
+
+                selected_order = self.user_access.find_order_by_number(selected_order_number)
+                if selected_order:
+                    self.user_access.remove_order(selected_order)
+                    self.view.print_message(f"Order {selected_order_number} removed.")
+                else:
+                    self.view.print_message("Order not found.")
             elif choice == "5":
                 user_access.make_payment()
                 self.view.print_message("Payment successful. Thank you for your purchase.")

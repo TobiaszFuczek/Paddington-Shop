@@ -17,6 +17,7 @@ class BasketStorage:
     def add(self, basket: Basket) -> Basket:
         basket_id = uuid.uuid4()
         basket.id = basket_id
+        basket.order_number = str(uuid.uuid4())  # Unikalny numer zamówienia
         self.baskets[basket_id] = basket
         return basket
 
