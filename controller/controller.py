@@ -37,8 +37,72 @@ class Controller:
         pass
 
     def personnel_menu(self):
-        # Obsługa panelu dla personelu
-        pass
+        while True:
+            personnel_options = [
+                "Add Product to Storage",
+                "Modify Order",
+                "Add Payment to Order Offline",
+                "Back to Main Menu"
+            ]
+
+            choice = self.view.get_menu_choice(personnel_options)
+
+            if choice == "1":
+                # Dodawanie nowego produktu do magazynu
+                product_name = self.view.get_input("Enter the product name to add to storage: ")
+                product_quantity = int(self.view.get_input("Enter the quantity of the product to add: "))
+                self.user_access.add_product_to_storage(product_name, product_quantity)
+                self.view.print_message(f"{product_quantity} {product_name}(s) added to storage.")
+
+            elif choice == "2":
+                order_number = self.view.get_input("Enter the order number to modify: ")
+                order_to_modify = self.user_access.find_order_by_number(order_number)
+
+                if order_to_modify is None:
+                    self.view.print_message("Order not found.")
+                else:
+                    while True:
+                        modification_options = [
+                            "Add Product to Order",
+                            "Remove Product from Order",
+                            "Finish Modification"
+                        ]
+                        modification_choice = self.view.get_menu_choice(modification_options)
+
+                        if modification_choice == "1":
+                            product = self.view.get_input("Enter the product name to add: ")
+                            self.user_access.add_product_to_basket(order_to_modify, product)
+                            self.view.print_message(f"{product} added to the order.")
+                        elif modification_choice == "2":
+                            self.view.print_message("Products in the order:")
+                            for product in order_to_modify.products:
+                                self.view.print_message(product)
+
+                            product = self.view.get_input("Enter the product name to remove: ")
+                            self.user_access.remove_product_from_basket(order_to_modify, product)
+                            self.view.print_message(f"{product} removed from the order.")
+                        elif modification_choice == "3":
+                            break
+                        else:
+                            self.view.print_message("Invalid choice. Please select a valid option.")
+
+                    self.view.print_message("Order modified successfully.")
+
+            elif choice == "3":
+                order_number = self.view.get_input("Enter the order number to add offline payment: ")
+                order_to_modify = self.user_access.find_order_by_number(order_number)
+
+                if order_to_modify is None:
+                    self.view.print_message("Order not found.")
+                else:
+                    payment_amount = float(self.view.get_input("Enter the payment amount: "))
+                    self.user_access.add_offline_payment(order_to_modify, payment_amount)
+                    self.view.print_message("Offline payment added to the order.")
+
+            elif choice == "4":
+                break
+            else:
+                self.view.print_message("Invalid choice. Please select a valid option.")
 
     def user_menu(self):
         while True:
