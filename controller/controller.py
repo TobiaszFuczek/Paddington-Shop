@@ -56,7 +56,7 @@ class Controller:
             if choice == "1":
                 products_to_add = []
                 while True:
-                    product = self.view.get_input("Enter the product name (or 'done' to finish): ")
+                    product = self.view.get_input("Enter the product name (or 'done' finish to add new products): ")
 
                     if product.lower() == "done":
                         break
@@ -65,6 +65,74 @@ class Controller:
 
                 new_basket = self.user_access.create_order(products_to_add)  # Przekazujemy produkty do create_order
                 self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
+
+                create_order_options = [
+                    "Preview Order",
+                    "Make Payment"
+                ]
+                create_order_choice = self.view.get_menu_choice(create_order_options)
+
+                if create_order_choice == "1":
+                    # Podgląd zamówienia
+                    order_preview = new_basket.get_products()
+                    self.view.print_message("Order Preview:")
+                    for product in order_preview:
+                        self.view.print_message(product)
+
+                    preview_order_options = [
+                        "Return to Menu",
+                        "Proceed to Payment"
+                    ]
+                    preview_order_choice = self.view.get_menu_choice(preview_order_options)
+
+                    if preview_order_choice == "1":
+                        # Powrót do menu
+                        continue
+                    elif preview_order_choice == "2":
+                        # Wybór opcji płatności
+                        payment_options = [
+                            "Online Payment (Credit Card)",
+                            "Online Payment (PayPal)",
+                            "Offline Payment (After Product Delivery)"
+                        ]
+                        payment_choice = self.view.get_menu_choice(payment_options)
+
+                        if payment_choice == "1":
+                            # Implementuj obsługę płatności kartą kredytową
+                            self.view.print_message("Online Credit Card Payment Process")
+                        elif payment_choice == "2":
+                            # Implementuj obsługę płatności PayPal
+                            self.view.print_message("Online PayPal Payment Process")
+                        elif payment_choice == "3":
+                            # Implementuj obsługę płatności offline
+                            self.view.print_message("Offline Payment (After Product Delivery) Process")
+                        else:
+                            self.view.print_message("Invalid payment choice.")
+
+
+
+
+
+                elif create_order_choice == "2":
+                    # Wybór opcji płatności
+                    payment_options = [
+                        "Online Payment (Credit Card)",
+                        "Online Payment (PayPal)",
+                        "Offline Payment (After Product Delivery)"
+                    ]
+                    payment_choice = self.view.get_menu_choice(payment_options)
+
+                    if payment_choice == "1":
+                        # Implementuj obsługę płatności kartą kredytową
+                        self.view.print_message("Online Credit Card Payment Process")
+                    elif payment_choice == "2":
+                        # Implementuj obsługę płatności PayPal
+                        self.view.print_message("Online PayPal Payment Process")
+                    elif payment_choice == "3":
+                        # Implementuj obsługę płatności offline
+                        self.view.print_message("Offline Payment (After Product Delivery) Process")
+                    else:
+                        self.view.print_message("Invalid payment choice.")
 
             elif choice == "2":
                 order_number = self.view.get_input("Enter the order number to modify: ")
@@ -136,8 +204,43 @@ class Controller:
                 else:
                     self.view.print_message("Order not found.")
             elif choice == "5":
-                user_access.make_payment()
-                self.view.print_message("Payment successful. Thank you for your purchase.")
+                # Lista dostępnych zamówień do zapłaty
+                order_list = self.user_access.get_order_list()
+                self.view.print_message("Available Orders to Make Payment:")
+                for order in order_list:
+                    self.view.print_message(order.order_number)
+
+                # Użytkownik wybiera zamówienie do zapłaty
+                selected_order_number = self.view.get_input(
+                    "Enter the order number to make payment (or 'back' to go back to the menu): ")
+
+                if selected_order_number == "back":
+                    continue
+
+                selected_order = self.user_access.find_order_by_number(selected_order_number)
+
+                if selected_order:
+                    # Użytkownik wybiera sposób płatności
+                    payment_options = [
+                        "Online Payment (Credit Card)",
+                        "Online Payment (PayPal)",
+                        "Offline Payment (After Product Delivery)"
+                    ]
+                    payment_choice = self.view.get_menu_choice(payment_options)
+
+                    if payment_choice == "1":
+                        # Implementuj obsługę płatności kartą kredytową dla wybranego zamówienia
+                        self.view.print_message("Online Credit Card Payment Process")
+                    elif payment_choice == "2":
+                        # Implementuj obsługę płatności PayPal dla wybranego zamówienia
+                        self.view.print_message("Online PayPal Payment Process")
+                    elif payment_choice == "3":
+                        # Implementuj obsługę płatności offline dla wybranego zamówienia
+                        self.view.print_message("Offline Payment (After Product Delivery) Process")
+                    else:
+                        self.view.print_message("Invalid payment choice.")
+                else:
+                    self.view.print_message("Order not found.")
             elif choice == "6":
                 break
             else:
