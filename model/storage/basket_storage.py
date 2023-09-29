@@ -27,4 +27,4 @@ class BasketStorage:
         return basket
 
     def delete(self, basket_id: uuid) -> Basket:
-        basket = self.baskets.pop(basket_id, None)
+        return self.baskets.pop(basket_id, None)

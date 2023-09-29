@@ -1,37 +1,32 @@
-from model.service.auth_service import AuthService
+from controller.user_controller import UserController
 from model.storage.basket_storage import BasketStorage
-from model.storage.user_storage import UserStorage
-from view.view import View
 from model.user_access import UserAccess
-from model.storage.basket import Basket
-
+from view.view import View
 
 
 class Controller:
     def __init__(self):
         self.view = View()
-        self.user_storage = UserStorage()
+        self.user_controller = UserController()
         self.basket_storage = BasketStorage()
-        self.auth_service = AuthService()
         self.user_access = UserAccess(self.basket_storage)
 
-    def panel_menu(self):
+    def start(self):
         while True:
-            login = self.view.get_input("Please enter your Login: ")
-            password = self.view.get_input("Please enter your Password: ")
-
-            user = self.user_storage.find_by_login(login)
-            if user and user.password == password:
-                user_type = user.user_type
-                if user_type == "owner":
-                    self.owner_menu()
-                elif user_type == "personnel":
-                    self.personnel_menu()
-                elif user_type == "user":
-                    self.user_menu()
-
+            role = self.user_controller.authenticate_action()
+            if role:
+                self.menu_action(role)
             else:
                 self.view.print_message("Login failed. Please check your credentials.")
+
+    def menu_action(self, role):
+        if role == "owner":
+            self.owner_menu()
+        elif role == "personnel":
+            self.personnel_menu()
+        elif role == "user":
+            self.user_menu()
+
     def owner_menu(self):
         # Obsługa panelu dla właściciela
         pass
@@ -48,11 +43,7 @@ class Controller:
             choice = self.view.get_menu_choice(personnel_options)
 
             if choice == "1":
-                # Dodawanie nowego produktu do magazynu
-                product_name = self.view.get_input("Enter the product name to add to storage: ")
-                product_quantity = int(self.view.get_input("Enter the quantity of the product to add: "))
-                self.user_access.add_product_to_storage(product_name, product_quantity)
-                self.view.print_message(f"{product_quantity} {product_name}(s) added to storage.")
+
 
             elif choice == "2":
                 order_number = self.view.get_input("Enter the order number to modify: ")
@@ -310,8 +301,5 @@ class Controller:
             else:
                 self.view.print_message("Invalid choice. Please select a valid option.")
 
-
     def control(self):
-        self.panel_menu()
-
-
+        self.start()

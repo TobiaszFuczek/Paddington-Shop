@@ -39,3 +39,9 @@ class UserAccess:
 
     def payments(self):
         return payment_method
+
+    def add_product_to_storage(self, product_name, product_quantity):
+        pass
+
+    def add_offline_payment(self, order_to_modify, payment_amount):
+        pass
