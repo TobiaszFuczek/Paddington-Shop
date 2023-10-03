@@ -18,30 +18,4 @@ class UserAccess:
                 return basket
         return None  # Zwracaj None, jeśli nie znaleziono zamówienia
 
-    def add_product_to_basket(self, basket, product):
-        basket.add_product(product)
 
-    def remove_product_from_basket(self, basket, product):
-        basket.remove_product(product)
-
-    def modificate_order(self, new_products):
-        self.basket = new_products
-
-    def preview_order(self, order):
-        return order.get_products()
-
-    def get_order_list(self):
-        return self.basket_storage.find_all()
-
-    def remove_order(self, basket):
-        if basket:
-            self.basket_storage.delete(basket.id)
-
-    def payments(self):
-        return payment_method
-
-    def add_product_to_storage(self, product_name, product_quantity):
-        pass
-
-    def add_offline_payment(self, order_to_modify, payment_amount):
-        pass

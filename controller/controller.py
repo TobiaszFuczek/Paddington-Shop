@@ -43,6 +43,7 @@ class Controller:
             choice = self.view.get_menu_choice(personnel_options)
 
             if choice == "1":
+                pass
 
 
             elif choice == "2":
