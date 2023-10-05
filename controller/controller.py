@@ -2,6 +2,7 @@ from controller.user_controller import UserController
 from model.storage.basket_storage import BasketStorage
 from model.user_access import UserAccess
 from view.view import View
+from model.storage.product import Product
 
 
 class Controller:
@@ -10,6 +11,7 @@ class Controller:
         self.user_controller = UserController()
         self.basket_storage = BasketStorage()
         self.user_access = UserAccess(self.basket_storage)
+        self.product = Product()
 
     def start(self):
         while True:
@@ -43,7 +45,13 @@ class Controller:
             choice = self.view.get_menu_choice(personnel_options)
 
             if choice == "1":
-                pass
+                product_id = self.view.get_input("Enter Product ID (5 numbers: ")
+                product_name = self.view.get_input("Enter Product Name: ")
+                price = float(self.view.get_input("Enter Price in Format xx,xx: "))
+                quantity = float(self.view.get_input("Enter quantity"))
+
+                self.product.create_new_product(product_id,product_name,price,quantity)
+
 
 
             elif choice == "2":

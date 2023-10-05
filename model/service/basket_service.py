@@ -24,9 +24,7 @@ class BasketService:
     
     def add_products(self, basket_id: uuid, self.product: products[]):
         basket = self.find_by_id(basket_id)
-        if basket:
-            
-        return 
+
 
     def delete(self, basket_id: uuid) -> Basket:
         return self.basket_storage.delete(basket_id)
