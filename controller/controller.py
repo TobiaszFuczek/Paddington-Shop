@@ -3,7 +3,7 @@ from model.storage.basket_storage import BasketStorage
 from model.user_access import UserAccess
 from view.view import View
 from model.storage.product import Product
-
+from model.service.product_service import ProductService
 
 class Controller:
     def __init__(self):
@@ -12,6 +12,7 @@ class Controller:
         self.basket_storage = BasketStorage()
         self.user_access = UserAccess(self.basket_storage)
         self.product = Product()
+        self.product_service = ProductService()
 
     def start(self):
         while True:
@@ -45,10 +46,23 @@ class Controller:
             choice = self.view.get_menu_choice(personnel_options)
 
             if choice == "1":
-                product_id = self.view.get_input("Enter Product ID (5 numbers: ")
+                product_id = self.view.get_input("Enter Product ID (5 numbers): ")
+                valid_product_id = self.product_service.validate_product_id(product_id)
+
+                if valid_product_id:
+                    print(f"Product ID is valid: {valid_product_id}")
+                else:
+                    print("Invalid Product ID format. Please enter 5 numbers.")
+
                 product_name = self.view.get_input("Enter Product Name: ")
-                price = float(self.view.get_input("Enter Price in Format xx,xx: "))
-                quantity = float(self.view.get_input("Enter quantity"))
+                price_input = self.view.get_input("Enter Price in Format xx.xx: ")
+                price = self.product_service.validate_price(price_input)
+
+                if price is not None:
+                    print(f"Price is valid: {price}")
+                else:
+                    print("Invalid price format. Please enter price in the format xx.xx.")
+                quantity = float(self.view.get_input("Enter quantity: "))
 
                 self.product.create_new_product(product_id,product_name,price,quantity)
 
