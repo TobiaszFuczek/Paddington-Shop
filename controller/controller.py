@@ -46,25 +46,29 @@ class Controller:
             choice = self.view.get_menu_choice(personnel_options)
 
             if choice == "1":
-                product_id = self.view.get_input("Enter Product ID (5 numbers): ")
-                valid_product_id = self.product_service.validate_product_id(product_id)
+                while True:
+                    product_id = self.view.get_input("Enter Product ID (5 numbers): ")
+                    valid_product_id = self.product_service.validate_product_id(product_id)
+                    if valid_product_id:
+                        print(f"Product ID is valid: {valid_product_id}")
+                        break
+                    else:
+                        print("Invalid Product ID format. Please enter 5 numbers.")
 
-                if valid_product_id:
-                    print(f"Product ID is valid: {valid_product_id}")
-                else:
-                    print("Invalid Product ID format. Please enter 5 numbers.")
 
                 product_name = self.view.get_input("Enter Product Name: ")
-                price_input = self.view.get_input("Enter Price in Format xx.xx: ")
-                price = self.product_service.validate_price(price_input)
+                while True:
+                    price_input = self.view.get_input("Enter Price in Format xx.xx: ")
+                    price = self.product_service.validate_price(price_input)
+                    if price is not None:
+                        print(f"Price is valid: {price}")
+                        break
+                    else:
+                        print("Invalid price format. Please enter price in the format xx.xx.")
 
-                if price is not None:
-                    print(f"Price is valid: {price}")
-                else:
-                    print("Invalid price format. Please enter price in the format xx.xx.")
-                quantity = float(self.view.get_input("Enter quantity: "))
 
-                self.product.create_new_product(product_id,product_name,price,quantity)
+                quantity_input = float(self.view.get_input("Enter quantity: "))
+                self.product.create_new_product(product_id,product_name,price,quantity_input)
 
 
 
