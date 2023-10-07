@@ -4,14 +4,17 @@ from model.user_access import UserAccess
 from view.view import View
 from model.storage.product import Product
 from model.service.product_service import ProductService
+from model.storage.product_storage import ProductStorage
 
 class Controller:
     def __init__(self):
+
         self.view = View()
         self.user_controller = UserController()
         self.basket_storage = BasketStorage()
         self.user_access = UserAccess(self.basket_storage)
-        self.product = Product()
+        self.product_storage = ProductStorage()
+        self.product = Product(self.product_storage)
         self.product_service = ProductService()
 
     def start(self):
