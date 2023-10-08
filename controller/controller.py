@@ -53,7 +53,6 @@ class Controller:
                     product_id = self.view.get_input("Enter Product ID (5 numbers): ")
                     valid_product_id = self.product_service.validate_product_id(product_id)
                     if valid_product_id:
-                        print(f"Product ID is valid: {valid_product_id}")
                         break
                     else:
                         print("Invalid Product ID format. Please enter 5 numbers.")
@@ -64,7 +63,6 @@ class Controller:
                     price_input = self.view.get_input("Enter Price in Format xx.xx: ")
                     price = self.product_service.validate_price(price_input)
                     if price is not None:
-                        print(f"Price is valid: {price}")
                         break
                     else:
                         print("Invalid price format. Please enter price in the format xx.xx.")
@@ -141,14 +139,16 @@ class Controller:
             if choice == "1":
                 products_to_add = []
                 while True:
+                    self.view.print_message(self.product_storage.products)
                     product = self.view.get_input("Enter the product name (or 'done' finish to add new products): ")
+
 
                     if product.lower() == "done":
                         break
 
                     products_to_add.append(product)
 
-                new_basket = self.user_access.create_order(products_to_add)  # Przekazujemy produkty do create_order
+                new_basket = self.user_access.create_order(products_to_add)
                 self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
 
                 create_order_options = [
