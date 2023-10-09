@@ -1,5 +1,7 @@
 import uuid
 
+import products as products
+
 from model.service.product_service import ProductService
 from model.storage.basket import Basket
 from model.storage.basket_storage import BasketStorage
@@ -36,9 +38,8 @@ class BasketService:
     def update(self, basket: Basket) -> Basket:
         return self.basket_storage.update(basket)
     
-    def add_products(self, basket_id: uuid, self.product: products[]):
-        basket = self.find_by_id(basket_id)
-
+    def add_products(self, basket_id: uuid):
+        pass
 
     def delete(self, basket_id: uuid) -> Basket:
         return self.basket_storage.delete(basket_id)

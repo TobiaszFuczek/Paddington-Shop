@@ -1,4 +1,5 @@
 from controller.user_controller import UserController
+from model.storage import basket_storage
 from model.storage.basket_storage import BasketStorage
 from view.view import View
 from model.storage.product import Product
@@ -34,7 +35,6 @@ class Controller:
             self.user_menu()
 
     def owner_menu(self):
-        # Obsługa panelu dla właściciela
         pass
 
     def personnel_menu(self):
@@ -146,7 +146,7 @@ class Controller:
 
                     products_to_add.append(product)
 
-                new_basket = self.basket_service.create_basket(self.products)
+                new_basket = self.basket_service.create_basket(products_to_add)
                 self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
 
                 create_order_options = [
@@ -213,7 +213,7 @@ class Controller:
 
             elif choice == "2":
                 order_number = self.view.get_input("Enter the order number to modify: ")
-                order_to_modify = self.user_access.find_order_by_number(order_number)
+                order_to_modify = self.basket_service.find_order_by_number(order_number)
 
                 if order_to_modify is None:
                     self.view.print_message("Order not found.")
@@ -228,7 +228,7 @@ class Controller:
 
                         if modification_choice == "1":
                             product = self.view.get_input("Enter the product name to add: ")
-                            self.user_access.add_product_to_basket(order_to_modify, product)
+                            self.basket.add_product(order_to_modify, product)
                             self.view.print_message(f"{product} added to the order.")
                         elif modification_choice == "2":
                             self.view.print_message("Products in the order:")
@@ -236,7 +236,7 @@ class Controller:
                                 self.view.print_message(product)
 
                             product = self.view.get_input("Enter the product name to remove: ")
-                            self.user_access.remove_product_from_basket(order_to_modify, product)
+                            self.basket.remove_product_from_basket(order_to_modify, product)
                             self.view.print_message(f"{product} removed from the order.")
                         elif modification_choice == "3":
                             break
@@ -246,7 +246,7 @@ class Controller:
                     self.view.print_message("Order modified successfully.")
 
             elif choice == "3":
-                order_list = self.user_access.get_order_list()
+                order_list = self.view.print_message(baskets)
                 self.view.print_message("Available Orders:")
                 for order in order_list:
                     self.view.print_message(order.order_number)
@@ -256,7 +256,7 @@ class Controller:
                 if selected_order_number == "back":
                     continue
 
-                selected_order = self.user_access.find_order_by_number(selected_order_number)
+                selected_order = self.basket_service.find_order_by_number(selected_order_number)
                 if selected_order:
                     order_preview = selected_order.get_products()
                     self.view.print_message("Order Preview:")
@@ -265,7 +265,7 @@ class Controller:
                 else:
                     self.view.print_message("Order not found.")
             elif choice == "4":
-                order_list = self.user_access.get_order_list()
+                order_list = basket_storage.find_all
                 self.view.print_message("Available Orders:")
                 for order in order_list:
                     self.view.print_message(order.order_number)
@@ -274,15 +274,15 @@ class Controller:
                 if selected_order_number == "back":
                     continue
 
-                selected_order = self.user_access.find_order_by_number(selected_order_number)
+                selected_order = self.basket_service.find_order_by_number(selected_order_number)
                 if selected_order:
-                    self.user_access.remove_order(selected_order)
+                    self.basket_service.delete
                     self.view.print_message(f"Order {selected_order_number} removed.")
                 else:
                     self.view.print_message("Order not found.")
             elif choice == "5":
                 # Lista dostępnych zamówień do zapłaty
-                order_list = self.user_access.get_order_list()
+                order_list = basket_storage.find_all
                 self.view.print_message("Available Orders to Make Payment:")
                 for order in order_list:
                     self.view.print_message(order.order_number)
@@ -294,7 +294,7 @@ class Controller:
                 if selected_order_number == "back":
                     continue
 
-                selected_order = self.user_access.find_order_by_number(selected_order_number)
+                selected_order = self.basket_storage.find_order_by_number(selected_order_number)
 
                 if selected_order:
                     # Użytkownik wybiera sposób płatności
