@@ -9,9 +9,23 @@ class BasketService:
     def __init__(self):
         self.basket_storage = BasketStorage()
         self.product_service = ProductService()
+        self.basket = []
+        self.order_number = 0
 
-    def find_all(self) -> list:
-        return self.basket_storage.find_all()
+    def create_basket(self, products):
+        new_basket = Basket()
+        for product in products:
+            new_basket.add_product(product)
+        self.basket_storage.add(new_basket)
+        return new_basket
+
+    def find_order_by_number(self, order_number):
+        for basket in self.basket_storage.find_all():
+            if basket.order_number == order_number:
+                return basket
+        return None
+
+
 
     def find_by_id(self, basket_id: uuid) -> Basket:
         return self.basket_storage.find_by_id(basket_id)

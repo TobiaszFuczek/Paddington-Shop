@@ -1,18 +1,18 @@
 from controller.user_controller import UserController
 from model.storage.basket_storage import BasketStorage
-from model.user_access import UserAccess
 from view.view import View
 from model.storage.product import Product
 from model.service.product_service import ProductService
 from model.storage.product_storage import ProductStorage
+from model.service.basket_service import BasketService
 
 class Controller:
     def __init__(self):
 
+        self.basket_service = BasketService()
         self.view = View()
         self.user_controller = UserController()
         self.basket_storage = BasketStorage()
-        self.user_access = UserAccess(self.basket_storage)
         self.product_storage = ProductStorage()
         self.product = Product(self.product_storage)
         self.product_service = ProductService()
@@ -75,7 +75,7 @@ class Controller:
 
             elif choice == "2":
                 order_number = self.view.get_input("Enter the order number to modify: ")
-                order_to_modify = self.user_access.find_order_by_number(order_number)
+                order_to_modify = self.basket_service.find_order_by_number(order_number)
 
                 if order_to_modify is None:
                     self.view.print_message("Order not found.")
@@ -90,7 +90,7 @@ class Controller:
 
                         if modification_choice == "1":
                             product = self.view.get_input("Enter the product name to add: ")
-                            self.user_access.add_product_to_basket(order_to_modify, product)
+                            self.basket_service.add(order_to_modify)
                             self.view.print_message(f"{product} added to the order.")
                         elif modification_choice == "2":
                             self.view.print_message("Products in the order:")
@@ -98,7 +98,7 @@ class Controller:
                                 self.view.print_message(product)
 
                             product = self.view.get_input("Enter the product name to remove: ")
-                            self.user_access.remove_product_from_basket(order_to_modify, product)
+                            self.basket_service.remove_product_from_basket(order_to_modify, product)
                             self.view.print_message(f"{product} removed from the order.")
                         elif modification_choice == "3":
                             break
@@ -109,13 +109,11 @@ class Controller:
 
             elif choice == "3":
                 order_number = self.view.get_input("Enter the order number to add offline payment: ")
-                order_to_modify = self.user_access.find_order_by_number(order_number)
+                order_to_modify = self.basket_service.find_order_by_number(order_number)
 
                 if order_to_modify is None:
                     self.view.print_message("Order not found.")
                 else:
-                    payment_amount = float(self.view.get_input("Enter the payment amount: "))
-                    self.user_access.add_offline_payment(order_to_modify, payment_amount)
                     self.view.print_message("Offline payment added to the order.")
 
             elif choice == "4":
@@ -148,7 +146,7 @@ class Controller:
 
                     products_to_add.append(product)
 
-                new_basket = self.user_access.create_order(products_to_add)
+                new_basket = self.basket_service.create_basket(self.products)
                 self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
 
                 create_order_options = [
@@ -171,10 +169,8 @@ class Controller:
                     preview_order_choice = self.view.get_menu_choice(preview_order_options)
 
                     if preview_order_choice == "1":
-                        # Powrót do menu
                         continue
                     elif preview_order_choice == "2":
-                        # Wybór opcji płatności
                         payment_options = [
                             "Online Payment (Credit Card)",
                             "Online Payment (PayPal)",
@@ -183,13 +179,10 @@ class Controller:
                         payment_choice = self.view.get_menu_choice(payment_options)
 
                         if payment_choice == "1":
-                            # Implementuj obsługę płatności kartą kredytową
                             self.view.print_message("Online Credit Card Payment Process")
                         elif payment_choice == "2":
-                            # Implementuj obsługę płatności PayPal
                             self.view.print_message("Online PayPal Payment Process")
                         elif payment_choice == "3":
-                            # Implementuj obsługę płatności offline
                             self.view.print_message("Offline Payment (After Product Delivery) Process")
                         else:
                             self.view.print_message("Invalid payment choice.")
@@ -199,7 +192,6 @@ class Controller:
 
 
                 elif create_order_choice == "2":
-                    # Wybór opcji płatności
                     payment_options = [
                         "Online Payment (Credit Card)",
                         "Online Payment (PayPal)",
