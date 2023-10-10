@@ -138,13 +138,23 @@ class Controller:
                 products_to_add = []
                 while True:
                     self.view.print_message(self.product_storage.products)
-                    product = self.view.get_input("Enter the product name (or 'done' finish to add new products): ")
+                    product_input = self.view.get_input("Enter the product name or ID (or 'done' finish to add new products): ")
 
 
-                    if product.lower() == "done":
+                    if product_input.lower() == "done":
                         break
 
-                    products_to_add.append(product)
+                    found_product = None
+                    for product in self.product_storage.products:
+                        if product_input == product['product_name'] or product_input == product['product_id']:
+                            found_product = product
+                            break
+
+                    if found_product:
+                        products_to_add.append(found_product)
+                    else:
+                        self.view.print_message(
+                            f"'{product_input}' is not available. Please choose from the available products.")
 
                 new_basket = self.basket_service.create_basket(products_to_add)
                 self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
