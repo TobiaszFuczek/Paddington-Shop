@@ -138,7 +138,7 @@ class Controller:
                 products_to_add = []
                 while True:
                     self.view.print_message(self.product_storage.products)
-                    product_input = self.view.get_input("Enter the product name or ID (or 'done' finish to add new products): ")
+                    product_input = self.view.get_input("Enter the product name (or 'done' finish to add new products): ")
 
 
                     if product_input.lower() == "done":
@@ -146,7 +146,7 @@ class Controller:
 
                     found_product = None
                     for product in self.product_storage.products:
-                        if product_input == product['product_name'] or product_input == product['product_id']:
+                        if product_input == product['product_name']:
                             found_product = product
                             break
 
@@ -166,11 +166,12 @@ class Controller:
                 create_order_choice = self.view.get_menu_choice(create_order_options)
 
                 if create_order_choice == "1":
-                    # Podgląd zamówienia
                     order_preview = new_basket.get_products()
                     self.view.print_message("Order Preview:")
                     for product in order_preview:
-                        self.view.print_message(product)
+                        product_name = product['product_name']
+                        quantity = product['quantity']
+                        self.view.print_message(f"Product: {product_name}, Quantity: {quantity}")
 
                     preview_order_options = [
                         "Return to Menu",
