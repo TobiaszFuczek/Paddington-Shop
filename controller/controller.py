@@ -9,7 +9,6 @@ from model.service.basket_service import BasketService
 
 class Controller:
     def __init__(self):
-
         self.basket_service = BasketService()
         self.view = View()
         self.user_controller = UserController()

@@ -2,7 +2,7 @@ from model.service.auth_service import AuthService
 from view.view import View
 
 
-class UserController():
+class UserController:
     def __init__(self):
         self.view = View()
         self.auth_service = AuthService()
