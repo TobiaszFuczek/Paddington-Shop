@@ -14,8 +14,8 @@ class Controller:
         self.user_controller = UserController()
         self.basket_storage = BasketStorage()
         self.product_storage = ProductStorage()
-        self.product = Product(self.product_storage)
         self.product_service = ProductService()
+
 
     def start(self):
         while True:
@@ -68,7 +68,8 @@ class Controller:
 
 
                 quantity_input = float(self.view.get_input("Enter quantity: "))
-                self.product.create_new_product(product_id,product_name,price,quantity_input)
+                product = Product(product_id, product_name, price, quantity_input)
+                self.product_storage.add(product)
 
 
 
