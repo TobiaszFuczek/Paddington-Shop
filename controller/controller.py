@@ -168,6 +168,7 @@ class Controller:
                 if create_order_choice == "1":
                     order_preview = new_basket.get_products()
                     self.view.print_message("Order Preview:")
+
                     for product in order_preview:
                         product_name = product['product_name']
                         quantity = product['quantity']

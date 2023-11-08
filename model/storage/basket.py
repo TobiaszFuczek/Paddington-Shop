@@ -16,7 +16,13 @@ class Basket:
         return self.products
 
     def modify_product_quantity(self, product, quantity):
-        pass
+        for p in self.products:
+            if p['product_id'] == product['product_id']:
+                p['quantity'] = quantity
+                break
 
     def get_total_price(self):
-        pass
+        total_price = 0
+        for product in self.products:
+            total_price += product['price'] * product['quantity']
+        return total_price
