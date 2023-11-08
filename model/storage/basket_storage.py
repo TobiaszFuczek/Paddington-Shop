@@ -5,8 +5,11 @@ from model.storage.basket import Basket
 
 class BasketStorage:
     def __init__(self):
+        """
         self.baskets = {}
-
+        """
+        """Test baskets"""
+        self.baskets = {}
     def find_all(self) -> list:
         return list(self.baskets.values())
 

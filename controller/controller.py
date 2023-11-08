@@ -138,7 +138,7 @@ class Controller:
                 products_to_add = []
                 while True:
                     self.view.print_message(self.product_storage.products)
-                    product_input = self.view.get_input("Enter the product name (or 'done' finish to add new products): ")
+                    product_input = self.view.get_input("Enter the product ID (or 'done' finish to add new products): ")
 
 
                     if product_input.lower() == "done":
@@ -146,7 +146,7 @@ class Controller:
 
                     found_product = None
                     for product in self.product_storage.products:
-                        if product_input == product['product_name']:
+                        if int(product_input) in self.product_storage.products:
                             found_product = product
                             break
 
