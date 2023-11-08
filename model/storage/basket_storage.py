@@ -9,7 +9,7 @@ class BasketStorage:
         self.baskets = {}
         """
         """Test baskets"""
-        self.baskets = {}
+        self.baskets = {1:1,2:2,3:3}
     def find_all(self) -> list:
         return list(self.baskets.values())
 
