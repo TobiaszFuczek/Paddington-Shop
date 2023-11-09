@@ -74,8 +74,8 @@ class Controller:
 
 
             elif choice == "2":
-                order_number = self.view.get_input("Enter the order number to modify: ")
-                order_to_modify = self.basket_service.find_order_by_number(order_number)
+                basket_id = self.view.get_input("Enter the order ID to modify: ")
+                order_to_modify = self.basket_storage.find_by_id(basket_id)
 
                 if order_to_modify is None:
                     self.view.print_message("Order not found.")
@@ -108,8 +108,8 @@ class Controller:
                     self.view.print_message("Order modified successfully.")
 
             elif choice == "3":
-                order_number = self.view.get_input("Enter the order number to add offline payment: ")
-                order_to_modify = self.basket_service.find_order_by_number(order_number)
+                basket_id = self.view.get_input("Enter the order ID to add offline payment: ")
+                order_to_modify = self.basket_storage.find_by_id(basket_id)
 
                 if order_to_modify is None:
                     self.view.print_message("Order not found.")
