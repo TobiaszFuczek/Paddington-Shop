@@ -1,7 +1,7 @@
 import uuid
 
 class Basket:
-    def __init__(self, products=None, order_number=None):
+    def __init__(self, products, order_number):
         self.id = uuid.uuid4()
         self.products = products if products is not None else []
         self.order_number = order_number

@@ -13,6 +13,7 @@ class BasketStorage:
     def find_all(self) -> list:
         return list(self.baskets.values())
 
+
     def find_by_id(self, basket_id: uuid) -> Basket:
         return self.baskets.get(basket_id)
 

@@ -28,7 +28,6 @@ class BasketService:
         return None
 
 
-
     def find_by_id(self, basket_id: uuid) -> Basket:
         return self.basket_storage.find_by_id(basket_id)
 
