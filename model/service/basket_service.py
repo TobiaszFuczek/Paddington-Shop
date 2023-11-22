@@ -14,7 +14,7 @@ class BasketService:
         self.basket = []
         self.order_number = 0
 
-    def create_basket(self, products):
+    def create_basket(self, products, order_number):
         new_basket = Basket()
         for product in products:
             new_basket.add_product(product)

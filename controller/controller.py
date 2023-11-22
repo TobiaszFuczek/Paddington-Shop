@@ -155,8 +155,9 @@ class Controller:
                     else:
                         self.view.print_message(
                             f"'{product_input}' is not available. Please choose from the available products.")
-
-                new_basket = self.basket_service.create_basket(products_to_add)
+                self.basket_storage.add(Basket)
+                Basket == order_number
+                new_basket = self.basket_service.create_basket(order_number)
                 self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
 
                 create_order_options = [
@@ -258,7 +259,7 @@ class Controller:
                     self.view.print_message("Order modified successfully.")
 
             elif choice == "3":
-                order_list = self.view.print_message(baskets)
+                order_list = self.view.print_message(self.baskets)
                 self.view.print_message("Available Orders:")
                 for order in order_list:
                     self.view.print_message(order.order_number)
@@ -294,7 +295,7 @@ class Controller:
                     self.view.print_message("Order not found.")
             elif choice == "5":
                 # Lista dostępnych zamówień do zapłaty
-                order_list = basket_storage.find_all
+                order_list = basket_storage.find_all()
                 self.view.print_message("Available Orders to Make Payment:")
                 for order in order_list:
                     self.view.print_message(order.order_number)
