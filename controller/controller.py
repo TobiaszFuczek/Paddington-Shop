@@ -9,6 +9,7 @@ from model.service.basket_service import BasketService
 
 class Controller:
     def __init__(self):
+        self.storage = None
         self.basket_service = BasketService()
         self.view = View()
         self.user_controller = UserController()
@@ -155,14 +156,15 @@ class Controller:
                     else:
                         self.view.print_message(
                             f"'{product_input}' is not available. Please choose from the available products.")
-                self.basket_storage.add(Basket)
-                Basket == order_number
-                new_basket = self.basket_service.create_basket(order_number)
-                self.view.print_message(f"Order created successfully. Order number: {new_basket.order_number}")
+
+                
+                new_basket = self.basket_service.create_basket
+                self.view.print_message(f"Order created successfully. Order number: {new_basket}")
 
                 create_order_options = [
                     "Preview Order",
-                    "Make Payment"
+                    "Make Payment",
+                    "Return to menu"
                 ]
                 create_order_choice = self.view.get_menu_choice(create_order_options)
 
@@ -199,6 +201,9 @@ class Controller:
                             self.view.print_message("Offline Payment (After Product Delivery) Process")
                         else:
                             self.view.print_message("Invalid payment choice.")
+                    elif preview_order_choice == "3":
+                        continue
+
 
 
 
