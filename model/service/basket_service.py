@@ -1,26 +1,22 @@
 import uuid
 
-import products as products
-
 from model.service.product_service import ProductService
 from model.storage.basket import Basket
 from model.storage.basket_storage import BasketStorage
-from model.storage.product_storage import ProductStorage
-from model.storage.product import Product
+
 class BasketService:
     def __init__(self):
         self.basket_storage = BasketStorage()
         self.product_service = ProductService()
         self.basket = []
-        self.order_number = 0
 
-    def create_basket(self, products, order_number):
+
+    def create_basket(self, products):
         new_basket = Basket()
-        self.order_number = order_number
-        for product in products:
-            new_basket.add_product(product)
+        new_basket.order_number = str(uuid.uuid4())
         self.basket_storage.add(new_basket)
-        return new_basket
+        self.basket.append(new_basket)
+
 
     def find_order_by_number(self, order_number):
         for basket in self.basket_storage.find_all():

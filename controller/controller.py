@@ -159,6 +159,7 @@ class Controller:
 
                 
                 new_basket = self.basket_service.create_basket
+
                 self.view.print_message(f"Order created successfully. Order number: {new_basket}")
 
                 create_order_options = [
@@ -169,7 +170,7 @@ class Controller:
                 create_order_choice = self.view.get_menu_choice(create_order_options)
 
                 if create_order_choice == "1":
-                    order_preview = new_basket.get_products()
+                    order_preview = new_basket
                     self.view.print_message("Order Preview:")
 
                     for product in order_preview:
